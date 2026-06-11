@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>Test GL240 CSV Parser</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    textarea { width: 100%; height: 200px; }
+    pre { background: #f0f0f0; padding: 10px; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <h1>Test GL240 CSV Parser</h1>
+  
+  <h2>Sample CSV:</h2>
+  <textarea id="csvInput">Vendor,GRAPHTEC Corporation
+Model,GL240
+Firmware,Ver1.55
+Software, "Ver1.10"
+MaxChannel,10CH
+GSStartCH
+WLStartCH,10CH
+Sampling,1s
+Total data points,234         
+Trigger,0           
+Start time,2026-06-09,16:53:28
+Stop time,2026-06-09,16:57:24
+Trigger time,2026-06-09,16:53:31
+AC Mode, AC1_2, AC1_2
+Logic/Pulse,Off,Off
+Amp setting
+CH, Signal name, AMP, Input, Range, Temp Range, Filter, Span
+CH1,CH 1,M,DC,20V,,Off,10.000000,-10.000000,V
+Data
+No., Date&Time, ms,CH1,Alarm1,AlarmOut
+NO.,Time,ms,V,A1234567890,A123456789
+1         ,2026-06-09 16:53:31,000,  +2.009,LLLLLLLLLL,LLLLLLLLL
+2         ,2026-06-09 16:53:32,000,  +2.009,LLLLLLLLLL,LLLLLLLLL
+3         ,2026-06-09 16:53:33,000,  +2.009,LLLLLLLLLL,LLLLLLLLL
+4         ,2026-06-09 16:53:34,000,  +2.009,LLLLLLLLLL,LLLLLLLLL
+5         ,2026-06-09 16:53:35,000,  +2.008,LLLLLLLLLL,LLLLLLLLL</textarea>
+
+  <h2>Parser Function:</h2>
+  <button onclick="testParser()">Test Parser</button>
+  
+  <h2>Hasil:</h2>
+  <pre id="output">Tunggu...</pre>
+
+  <script>
+    // Parser GL240: cari baris data (mulai setelah "NO.,Time,ms,V,...") 
+    // dan ambil kolom V (index ke-3, atau kolom ke-4 jika 1-based)
+    function parseGL240CSV(text) {
+      const lines = text.split(/\r?\n/);
+      
+      // Cari baris header data (yang berisi "V" di kolom 4)
+      let dataStartIdx = -1;
+      for (let i = 0; i < lines.length; i++) {
+        if (lines[i].includes('NO.,') && lines[i].includes('V')) {
+          dataStartIdx = i + 1; // baris berikutnya adalah data
+          console.log(`Header ditemukan di baris ${i}, data mulai baris ${dataStartIdx}`);
+          break;
+        }
+      }
+      
+      if (dataStartIdx === -1) {
+        return { error: 'Header "NO.,Time,ms,V,..." tidak ditemukan', values: [] };
+      }
+
+      const nums = [];
+      for (let i = dataStartIdx; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+        
+        // Split dengan koma
+        const cols = line.split(',');
+        
+        // Kolom ke-4 (index 3) adalah V
+        if (cols.length < 4) continue;
+        
+        const vCell = cols[3].trim();
+        const v = parseFloat(vCell);
+        
+        if (!isNaN(v)) {
+          nums.push(v);
+          console.log(`Baris ${i}: V="${vCell}" → ${v}`);
+        }
+      }
+      
+      return { values: nums };
+    }
+
+    function testParser() {
+      const csv = document.getElementById('csvInput').value;
+      const result = parseGL240CSV(csv);
+      
+      if (result.error) {
+        document.getElementById('output').textContent = result.error;
+        return;
+      }
+      
+      const values = result.values;
+      const avg = values.length > 0 ? values.reduce((a, b) => a + b, 0) / values.length : NaN;
+      
+      let output = `Total nilai: ${values.length}\n`;
+      output += `Nilai: [${values.join(', ')}]\n`;
+      output += `Rata-rata: ${avg.toFixed(4)} V\n`;
+      
+      document.getElementById('output').textContent = output;
+    }
+  </script>
+</body>
+</html>
