@@ -1278,22 +1278,22 @@ function initTrends(){
 }
 
 // ===================== HISTORY / DB =====================
-const histData=[
-  ['SESS-2026-042','10 Jun 2026','Ahmad Fauzi','Sampel Udara A-14','CCS200','M00474302','253.67','97.81','0.02','warn'],
-  ['SESS-2026-041','08 Jun 2026','Budi Santoso','Sampel Emisi B-07','CCS200','M00474302','253.65','99.40','0.01','pass'],
-  ['SESS-2026-040','05 Jun 2026','Ahmad Fauzi','Referensi Std #22','CCS200','M00474303','253.66','100.00','0.00','pass'],
-  ['SESS-2026-039','02 Jun 2026','Citra Dewi','Sampel Industri C-03','CCS200','M00474302','253.68','88.20','0.03','fail'],
-  ['SESS-2026-038','29 Mei 2026','Budi Santoso','Sampel Udara A-13','CCS200','M00474302','253.65','98.90','0.01','pass'],
-  ['SESS-2026-037','26 Mei 2026','Ahmad Fauzi','Sampel Emisi B-06','CCS200','M00474303','253.64','97.30','0.01','pass'],
-];
-const dbData=[
-  ['SMP-001','Ref Merkuri Std #1','Referensi','Gas','05 Jan 2026','Ahmad Fauzi','253.65'],
-  ['SMP-002','Sampel Udara A-01','Pengukuran','Udara','12 Jan 2026','Budi Santoso','253.67'],
-  ['SMP-003','Sampel Emisi B-01','Pengukuran','Gas Buang','18 Jan 2026','Citra Dewi','253.68'],
-  ['SMP-004','Ref Merkuri Std #2','Referensi','Gas','20 Feb 2026','Ahmad Fauzi','253.65'],
-  ['SMP-005','Sampel Industri C-01','Pengukuran','Gas Cerobong','15 Mar 2026','Budi Santoso','253.70'],
-  ['SMP-006','Sampel Udara A-08','Pengukuran','Udara Ambien','02 Apr 2026','Ahmad Fauzi','253.66'],
-];
+// const histData=[
+//   ['SESS-2026-042','10 Jun 2026','Ahmad Fauzi','Sampel Udara A-14','CCS200','M00474302','253.67','97.81','0.02','warn'],
+//   ['SESS-2026-041','08 Jun 2026','Budi Santoso','Sampel Emisi B-07','CCS200','M00474302','253.65','99.40','0.01','pass'],
+//   ['SESS-2026-040','05 Jun 2026','Ahmad Fauzi','Referensi Std #22','CCS200','M00474303','253.66','100.00','0.00','pass'],
+//   ['SESS-2026-039','02 Jun 2026','Citra Dewi','Sampel Industri C-03','CCS200','M00474302','253.68','88.20','0.03','fail'],
+//   ['SESS-2026-038','29 Mei 2026','Budi Santoso','Sampel Udara A-13','CCS200','M00474302','253.65','98.90','0.01','pass'],
+//   ['SESS-2026-037','26 Mei 2026','Ahmad Fauzi','Sampel Emisi B-06','CCS200','M00474303','253.64','97.30','0.01','pass'],
+// ];
+// const dbData=[
+//   ['SMP-001','Ref Merkuri Std #1','Referensi','Gas','05 Jan 2026','Ahmad Fauzi','253.65'],
+//   ['SMP-002','Sampel Udara A-01','Pengukuran','Udara','12 Jan 2026','Budi Santoso','253.67'],
+//   ['SMP-003','Sampel Emisi B-01','Pengukuran','Gas Buang','18 Jan 2026','Citra Dewi','253.68'],
+//   ['SMP-004','Ref Merkuri Std #2','Referensi','Gas','20 Feb 2026','Ahmad Fauzi','253.65'],
+//   ['SMP-005','Sampel Industri C-01','Pengukuran','Gas Cerobong','15 Mar 2026','Budi Santoso','253.70'],
+//   ['SMP-006','Sampel Udara A-08','Pengukuran','Udara Ambien','02 Apr 2026','Ahmad Fauzi','253.66'],
+// ];
 
 function populateHistDB(){
   const bm={pass:'bp2',warn:'bw2',fail:'bf2'}, lm={pass:'✓ PASS',warn:'⚠ WARN',fail:'✗ FAIL'};
