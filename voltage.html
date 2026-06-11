@@ -3,233 +3,453 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Analisis Tegangan — Sebelum/Sesudah</title>
+  <title>Analisis Tegangan</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
-    :root{--bg:#f6f8fb;--card:#fff;--muted:#6b7f8e;--accent:#1d6fb8;--ok:#1a9e6e}
-    body{font-family:Inter,system-ui,Segoe UI,Arial;background:var(--bg);color:#17202a;padding:20px}
-    .card{background:var(--card);padding:18px;border-radius:10px;max-width:920px;margin:18px auto;box-shadow:0 8px 30px rgba(17,24,39,.06)}
-    h1{font-size:18px;margin:0 0 6px;position:relative}
-    p.lead{color:var(--muted);font-size:13px;margin:0 0 14px}
-    .top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
-    .back{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(29,111,184,.12);padding:8px 12px;border-radius:8px;color:var(--accent);background:#fff;text-decoration:none;cursor:pointer}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-    .drop{background:#fbfdff;border:2px dashed #e6eef6;border-radius:10px;padding:14px;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer}
-    .drop.drag{border-color:var(--accent);background:linear-gradient(180deg,#f0f8ff, #fbfdff)}
-    .drop small{display:block;color:var(--muted);margin-top:8px}
-    .meta{font-size:13px;color:var(--muted);margin-top:8px}
-    .controls{display:flex;gap:10px;align-items:center;margin-top:12px}
-    .btn{background:var(--ok);color:#fff;padding:10px 14px;border-radius:8px;border:none;cursor:pointer;font-weight:600}
-    .btn.secondary{background:var(--accent)}
-    .btn:disabled{opacity:.6;cursor:not-allowed}
-    table{width:100%;border-collapse:collapse;margin-top:16px}
-    th,td{padding:10px;border:1px solid #eef4f8}
-    th{background:#f7fbff;color:#234a65;text-align:center}
-    <!doctype html>
-    <html lang="id">
-    <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width,initial-scale=1">
-      <title>Analisis Tegangan — Sebelum/Sesudah</title>
-      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-      <style>
-        :root{--bg:#f6f8fb;--card:#fff;--muted:#6b7f8e;--accent:#1d6fb8;--ok:#1a9e6e}
-        body{font-family:Inter,system-ui,Segoe UI,Arial;background:var(--bg);color:#17202a;padding:20px}
-        .card{background:var(--card);padding:18px;border-radius:10px;max-width:920px;margin:18px auto;box-shadow:0 8px 30px rgba(17,24,39,.06)}
-        h1{font-size:18px;margin:0 0 6px}
-        p.lead{color:var(--muted);font-size:13px;margin:0 0 14px}
-        .top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
-        .back{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(29,111,184,.12);padding:10px 12px;border-radius:8px;color:var(--accent);background:#fff;text-decoration:none;cursor:pointer;font-size:10px}
-        .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-        .drop{background:#fbfdff;border:2px dashed #e6eef6;border-radius:10px;padding:14px;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer}
-        .drop.drag{border-color:var(--accent);background:linear-gradient(180deg,#f0f8ff, #fbfdff)}
-        .drop small{display:block;color:var(--muted);margin-top:8px}
-        .meta{font-size:13px;color:var(--muted);margin-top:8px}
-        .controls{display:flex;gap:10px;align-items:center;margin-top:12px}
-        .btn{background:var(--ok);color:#fff;padding:10px 14px;border-radius:8px;border:none;cursor:pointer;font-weight:600}
-        .btn.secondary{background:var(--accent)}
-        .btn:disabled{opacity:.6;cursor:not-allowed}
-        table{width:100%;border-collapse:collapse;margin-top:16px}
-        th,td{padding:10px;border:1px solid #eef4f8}
-        th{background:#f7fbff;color:#234a65;text-align:center}
-        td{font-family:Inter,Segoe UI,Arial;font-size:14px}
-        td.right{text-align:right}
-        .small{font-size:13px;color:var(--muted)}
-        .inputs{display:flex;gap:10px;align-items:center;margin-top:8px}
-        input[type=number]{padding:8px;border-radius:8px;border:1px solid #e6eef6;width:110px}
-      </style>
-    </head>
-    <body>
-      <div class="card">
-        <div class="top">
+    :root {
+      --bg: #f6f8fb;
+      --surface: #ffffff;
+      --surface-strong: #eef4f8;
+      --text: #17202a;
+      --muted: #6b7f8e;
+      --accent: #1d6fb8;
+      --success: #1a9e6e;
+      --border: #dce8f2;
+      --shadow: 0 10px 40px rgba(17,24,39,.08);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, system-ui, Segoe UI, Arial, sans-serif;
+      background: linear-gradient(180deg, #eef6fb 0%, #f6f8fb 100%);
+      color: var(--text);
+      padding: 24px;
+    }
+
+    .page {
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .title-block h1 {
+      margin: 0 0 6px;
+      font-size: 22px;
+      letter-spacing: -.02em;
+    }
+
+    .title-block p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(29,111,184,.16);
+      background: #fff;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 13px;
+      box-shadow: 0 10px 30px rgba(17,24,39,.04);
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--surface-strong);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+
+    .panel h2 {
+      margin: 0 0 4px;
+      font-size: 16px;
+    }
+
+    .panel p {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .folder-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .folder {
+      border: 1px solid var(--surface-strong);
+      border-radius: 18px;
+      background: #f9fcff;
+      min-height: 140px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+      cursor: pointer;
+    }
+
+    .folder:hover {
+      transform: translateY(-1px);
+      border-color: rgba(29,111,184,.24);
+      background: #f3f9ff;
+    }
+
+    .folder .label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .folder .name {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .folder small {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .folder .status {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .summary {
+      border-top: 1px solid var(--surface-strong);
+      padding-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+      align-items: end;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field label {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .field input {
+      width: 100%;
+      border: 1px solid var(--surface-strong);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14px;
+      background: #fff;
+      color: var(--text);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+      align-items: center;
+    }
+
+    .actions .btn {
+      min-width: 190px;
+    }
+
+    .result-box {
+      margin-top: 24px;
+      border: 1px solid var(--surface-strong);
+      border-radius: 18px;
+      background: #f8fbff;
+      padding: 20px;
+    }
+
+    .result-box table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .result-box th,
+    .result-box td {
+      padding: 12px 14px;
+      border: 1px solid rgba(34,74,101,.08);
+    }
+
+    .result-box th {
+      background: rgba(243,249,255,.9);
+      color: #1f4f7d;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    .result-box td {
+      font-size: 14px;
+    }
+
+    .result-note {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <div class="title-block">
+        <h1>Analisis Tegangan</h1>
+        <p>Unggah file CSV hasil pengukuran tegangan untuk menghitung rata-rata sebelum dan sesudah treatment.</p>
+      </div>
+      <a class="back" href="index.html">⟵ Kembali ke Analisis Spektrum</a>
+    </div>
+
+    <section class="panel">
+      <h2>Unggah File CSV</h2>
+      <p>Unggah satu file CSV GL240 untuk setiap kondisi pengukuran tegangan.</p>
+
+      <div class="folder-grid">
+        <div id="dropBefore" class="folder">
           <div>
-            <h1>Analisis Tegangan</h1>
-            <p class="lead">Analisis perbandingan tegangan sebelum dan sesudah treatment pada pipe cell. Unggah file CSV hasil pengukuran untuk mendapatkan hasil analisis.</p>
+            <div class="label">File CSV 1</div>
+            <div class="name">Tegangan Sebelum</div>
+            <small>Klik atau seret file CSV untuk data tegangan sebelum treatment.</small>
           </div>
+          <div id="infoBefore" class="status">0 file</div>
+        </div>
+        <div id="dropAfter" class="folder">
           <div>
-            <button class="back" onclick="location.href='index.html'">⟵ Kembali ke Analisis Spektrum</button>
+            <div class="label">File CSV 2</div>
+            <div class="name">Tegangan Sesudah</div>
+            <small>Klik atau seret file CSV untuk data tegangan sesudah treatment.</small>
           </div>
+          <div id="infoAfter" class="status">0 file</div>
         </div>
-
-        <div class="grid">
-          <div id="dropBefore" class="drop">Klik atau seret file CSV untuk <strong>Tegangan Sebelum</strong><small>Terima: .csv, .txt (kolom numerik)</small><div id="infoBefore" class="meta"></div></div>
-          <div id="dropAfter" class="drop">Klik atau seret file CSV untuk <strong>Tegangan Sesudah</strong><small>Terima: .csv, .txt (kolom numerik)</small><div id="infoAfter" class="meta"></div></div>
-        </div>
-
-        <div class="inputs">
-          <div class="small">Set Point Potensiometer:</div>
-          <input type="number" id="setpoint" value="7" step="0.01">
-          <div class="small">Toleransi (± V):</div>
-          <input type="number" id="tol" value="0.2" step="0.01">
-        </div>
-
-        <div class="controls">
-          <button id="runBtn" class="btn" disabled>Jalankan Analisis Tegangan</button>
-          <button id="downloadBtn" class="btn secondary" disabled>Unduh Hasil CSV</button>
-          <div id="status" class="small">Menunggu file...</div>
-        </div>
-
-        <div id="resultArea"></div>
       </div>
 
-      <input type="file" id="fb" accept=".csv,.txt" multiple style="display:none">
-      <input type="file" id="fa" accept=".csv,.txt" multiple style="display:none">
+      <div class="summary" id="summaryText">
+        <span>Total file dimuat: 0 CSV</span>
+        <span>Folder terisi: 0/2</span>
+      </div>
 
-    <script>
-      // Parser untuk GL240 format: cari baris data berdasarkan header "NO.,Time,ms,V,..."
-      function parseGL240CSV(text) {
-        const lines = text.split(/\r?\n/);
-        let dataStartIdx = -1;
-        
-        // Cari header data (yang berisi "NO.," dan "V")
-        for (let i = 0; i < lines.length; i++) {
-          if (lines[i].includes('NO.,') && lines[i].includes(',V,')) {
-            dataStartIdx = i + 1;
-            break;
-          }
+      <div class="form-row">
+        <div class="field">
+          <label for="setpoint">Set Point Potensiometer</label>
+          <input type="number" id="setpoint" value="7" step="0.01">
+        </div>
+        <div class="field">
+          <label for="tol">Toleransi (± V)</label>
+          <input type="number" id="tol" value="0.2" step="0.01">
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="runBtn" class="btn" disabled>Jalankan Analisis Tegangan</button>
+        <button id="downloadBtn" class="btn secondary" disabled>Unduh Hasil CSV</button>
+        <div id="status" class="small">Menunggu file...</div>
+      </div>
+
+      <div id="resultArea"></div>
+    </section>
+  </div>
+
+  <input type="file" id="fb" accept=".csv,.txt" multiple hidden>
+  <input type="file" id="fa" accept=".csv,.txt" multiple hidden>
+
+  <script>
+    function parseGL240CSV(text) {
+      const lines = text.split(/\r?\n/);
+      let dataStartIdx = -1;
+      for (let i = 0; i < lines.length; i++) {
+        if (lines[i].includes('NO.,') && lines[i].includes(',V,')) {
+          dataStartIdx = i + 1;
+          break;
         }
-        
-        if (dataStartIdx === -1) return []; // format tidak dikenal
-        
-        const nums = [];
-        for (let i = dataStartIdx; i < lines.length; i++) {
-          const line = lines[i].trim();
-          if (!line) continue;
-          const cols = line.split(',');
-          if (cols.length < 4) continue;
-          const v = parseFloat(cols[3].trim());
-          if (!isNaN(v)) nums.push(v);
-        }
-        return nums;
       }
-
-      // parsing helper untuk format umum
-      function parseCSVtoNumbers(text){
-        // Coba GL240 format dulu
-        let nums = parseGL240CSV(text);
-        if (nums.length > 0) return nums;
-        
-        // Fallback ke parser umum
-        const lines=text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
-        nums=[];
-        for(const l of lines){
-          const parts=l.split(/[,;\t]/).map(p=>p.trim());
-          for(const p of parts){
-            const v=parseFloat(p.replace(',','.'));
-            if(!Number.isNaN(v)){ nums.push(v); break; }
-          }
-        }
-        return nums;
+      if (dataStartIdx === -1) return [];
+      const nums = [];
+      for (let i = dataStartIdx; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
+        const cols = line.split(',');
+        if (cols.length < 4) continue;
+        const v = parseFloat(cols[3].trim());
+        if (!isNaN(v)) nums.push(v);
       }
+      return nums;
+    }
 
-      // average values across multiple files (each file may contain many numbers)
-      async function readFilesList(fileList){
-        const files=Array.from(fileList).filter(f=>f.name.toLowerCase().match(/\.csv$|\.txt$/));
-        const all=[];
-        for(const f of files){
-          const txt = await f.text();
-          const nums = parseCSVtoNumbers(txt);
-          if(nums.length>0) all.push(...nums);
+    function parseCSVtoNumbers(text) {
+      let nums = parseGL240CSV(text);
+      if (nums.length > 0) return nums;
+      const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+      nums = [];
+      for (const l of lines) {
+        const parts = l.split(/[,;\t]/).map(p => p.trim());
+        for (const p of parts) {
+          const v = parseFloat(p.replace(',', '.'));
+          if (!Number.isNaN(v)) { nums.push(v); break; }
         }
-        return {count:files.length, values: all};
       }
+      return nums;
+    }
 
-      const dropBefore=document.getElementById('dropBefore');
-      const dropAfter=document.getElementById('dropAfter');
-      const infoBefore=document.getElementById('infoBefore');
-      const infoAfter=document.getElementById('infoAfter');
-      const fbInput=document.getElementById('fb');
-      const faInput=document.getElementById('fa');
-      const runBtn=document.getElementById('runBtn');
-      const status=document.getElementById('status');
-      const resultArea=document.getElementById('resultArea');
-      const downloadBtn=document.getElementById('downloadBtn');
+    async function readFilesList(fileList) {
+      const files = Array.from(fileList).filter(f => f.name.toLowerCase().match(/\.csv$|\.txt$/));
+      const all = [];
+      for (const f of files) {
+        const txt = await f.text();
+        const nums = parseCSVtoNumbers(txt);
+        if (nums.length > 0) all.push(...nums);
+      }
+      return { count: files.length, values: all };
+    }
 
-      let beforeData=null, afterData=null;
+    const dropBefore = document.getElementById('dropBefore');
+    const dropAfter = document.getElementById('dropAfter');
+    const infoBefore = document.getElementById('infoBefore');
+    const infoAfter = document.getElementById('infoAfter');
+    const summaryText = document.getElementById('summaryText');
+    const fbInput = document.getElementById('fb');
+    const faInput = document.getElementById('fa');
+    const runBtn = document.getElementById('runBtn');
+    const status = document.getElementById('status');
+    const resultArea = document.getElementById('resultArea');
+    const downloadBtn = document.getElementById('downloadBtn');
 
-      function setStatus(){
-        if(beforeData && afterData){
-          status.textContent = `Siap: ${beforeData.count} file sebelum · ${afterData.count} file sesudah · ${beforeData.values.length} titik · ${afterData.values.length} titik`;
-          runBtn.disabled = beforeData.values.length===0 || afterData.values.length===0;
+    let beforeData = null;
+    let afterData = null;
+
+    function updateSummary() {
+      const beforeCount = beforeData ? beforeData.count : 0;
+      const afterCount = afterData ? afterData.count : 0;
+      const total = beforeCount + afterCount;
+      const filled = (beforeCount > 0 ? 1 : 0) + (afterCount > 0 ? 1 : 0);
+      summaryText.innerHTML = `<span>Total file dimuat: ${total} CSV</span><span>Folder terisi: ${filled}/2</span>`;
+    }
+
+    function setStatus() {
+      updateSummary();
+      if (beforeData && afterData) {
+        status.textContent = `Siap: ${beforeData.count} file sebelum · ${afterData.count} file sesudah · ${beforeData.values.length} titik · ${afterData.values.length} titik`;
+        runBtn.disabled = beforeData.values.length === 0 || afterData.values.length === 0;
+      } else {
+        status.textContent = 'Menunggu file...';
+        runBtn.disabled = true;
+        downloadBtn.disabled = true;
+        resultArea.innerHTML = '';
+      }
+    }
+
+    function listenDrop(label, drop, input, info) {
+      drop.addEventListener('click', () => input.click());
+      drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('drag'); });
+      drop.addEventListener('dragleave', () => drop.classList.remove('drag'));
+      drop.addEventListener('drop', async e => {
+        e.preventDefault(); drop.classList.remove('drag');
+        const res = await readFilesList(e.dataTransfer.files);
+        if (label === 'Before') {
+          beforeData = res;
+          info.textContent = `${res.count} file · ${res.values.length} nilai`;
         } else {
-          status.textContent = 'Menunggu file...'; runBtn.disabled=true; downloadBtn.disabled=true; resultArea.innerHTML='';
+          afterData = res;
+          info.textContent = `${res.count} file · ${res.values.length} nilai`;
         }
-      }
-
-      // drop handlers
-      [['Before', dropBefore, fbInput, infoBefore], ['After', dropAfter, faInput, infoAfter]].forEach(([label,drop,input,info])=>{
-        drop.addEventListener('click', ()=>input.click());
-        drop.addEventListener('dragover', e=>{e.preventDefault(); drop.classList.add('drag');});
-        drop.addEventListener('dragleave', e=>{drop.classList.remove('drag');});
-        drop.addEventListener('drop', async e=>{
-          e.preventDefault(); drop.classList.remove('drag');
-          const res = await readFilesList(e.dataTransfer.files);
-          if(label==='Before'){ beforeData = res; info.textContent = `${res.count} file · ${res.values.length} nilai`; }
-          else { afterData = res; info.textContent = `${res.count} file · ${res.values.length} nilai`; }
-          setStatus();
-        });
-        input.addEventListener('change', async e=>{
-          const res = await readFilesList(e.target.files);
-          if(label==='Before'){ beforeData = res; info.textContent = `${res.count} file · ${res.values.length} nilai`; }
-          else { afterData = res; info.textContent = `${res.count} file · ${res.values.length} nilai`; }
-          input.value=''; setStatus();
-        });
+        setStatus();
       });
-
-      function avg(arr){ if(!arr||arr.length===0) return NaN; return arr.reduce((s,v)=>s+v,0)/arr.length; }
-
-      runBtn.addEventListener('click', ()=>{
-        if(!beforeData || !afterData) return;
-        const avgBefore = avg(beforeData.values);
-        const avgAfter = avg(afterData.values);
-        const setpoint = parseFloat(document.getElementById('setpoint').value)||0;
-        const tol = parseFloat(document.getElementById('tol').value)||0.2;
-
-        const pass = Math.abs(avgAfter - 2.000) <= tol;
-
-        const rows = [
-          {no:1, cond:'Sebelum Treatment Pipe Cell', sp:setpoint, hasil:(isNaN(avgBefore)?'-':avgBefore.toFixed(3)+' VDC')},
-          {no:2, cond:'Setelah Treatment Pipe Cell', sp:setpoint, hasil:(isNaN(avgAfter)?'-':avgAfter.toFixed(3)+' VDC')},
-          {no:3, cond:'Fungsi Kalibrasi', sp:setpoint, hasil:(pass? 'Pass':'Fail')}
-        ];
-
-        let html = '<table><thead><tr><th>No.</th><th>Kondisi</th><th>Set Point Potensiometer</th><th>Hasil Uji</th></tr></thead><tbody>';
-        rows.forEach(r=>{
-          html += `<tr><td style="text-align:center">${r.no}</td><td>${r.cond}</td><td style="text-align:center">${r.sp}</td><td style="text-align:center">${r.hasil}</td></tr>`;
-        });
-        html += '</tbody></table>';
-
-        html += `<div style="margin-top:10px" class="small">Rata-rata Sebelum: <strong>${isNaN(avgBefore)?'-':avgBefore.toFixed(4)+' V'}</strong> · Rata-rata Sesudah: <strong>${isNaN(avgAfter)?'-':avgAfter.toFixed(4)+' V'}</strong></div>`;
-
-        resultArea.innerHTML = html;
-        downloadBtn.disabled=false;
-
-        downloadBtn.onclick = ()=>{
-          const hdr='No,Kondisi,SetPoint,Hasil\n';
-          const csv = hdr + rows.map(r=>`${r.no},"${r.cond}",${r.sp},"${r.hasil}"`).join('\n');
-          const link=document.createElement('a'); link.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv); link.download='hasil-analisis-tegangan.csv'; link.click();
-        };
+      input.addEventListener('change', async e => {
+        const res = await readFilesList(e.target.files);
+        if (label === 'Before') {
+          beforeData = res;
+          info.textContent = `${res.count} file · ${res.values.length} nilai`;
+        } else {
+          afterData = res;
+          info.textContent = `${res.count} file · ${res.values.length} nilai`;
+        }
+        input.value = '';
+        setStatus();
       });
-    </script>
-  </body>
-  </html>
+    }
+
+    listenDrop('Before', dropBefore, fbInput, infoBefore);
+    listenDrop('After', dropAfter, faInput, infoAfter);
+
+    function avg(arr) {
+      return arr && arr.length ? arr.reduce((s, v) => s + v, 0) / arr.length : NaN;
+    }
+
+    runBtn.addEventListener('click', () => {
+      if (!beforeData || !afterData) return;
+      const avgBefore = avg(beforeData.values);
+      const avgAfter = avg(afterData.values);
+      const setpoint = parseFloat(document.getElementById('setpoint').value) || 0;
+      const tol = parseFloat(document.getElementById('tol').value) || 0.2;
+      const pass = Math.abs(avgAfter - setpoint) <= tol;
+
+      const rows = [
+        { no: 1, cond: 'Sebelum Treatment Pipe Cell', sp: setpoint, hasil: (isNaN(avgBefore) ? '-' : avgBefore.toFixed(3) + ' VDC') },
+        { no: 2, cond: 'Setelah Treatment Pipe Cell', sp: setpoint, hasil: (isNaN(avgAfter) ? '-' : avgAfter.toFixed(3) + ' VDC') },
+        { no: 3, cond: 'Fungsi Kalibrasi', sp: setpoint, hasil: pass ? 'Pass' : 'Fail' }
+      ];
+
+      let html = '<div class="result-box">';
+      html += '<table><thead><tr><th>No.</th><th>Kondisi</th><th>Set Point Potensiometer</th><th>Hasil Uji</th></tr></thead><tbody>';
+      rows.forEach(r => {
+        html += `<tr><td>${r.no}</td><td>${r.cond}</td><td>${r.sp}</td><td>${r.hasil}</td></tr>`;
+      });
+      html += '</tbody></table>';
+      html += `<p class="result-note">Rata-rata Sebelum: <strong>${isNaN(avgBefore) ? '-' : avgBefore.toFixed(4) + ' V'}</strong> · Rata-rata Sesudah: <strong>${isNaN(avgAfter) ? '-' : avgAfter.toFixed(4) + ' V'}</strong></p>`;
+      html += '</div>';
+
+      resultArea.innerHTML = html;
+      downloadBtn.disabled = false;
+      downloadBtn.onclick = () => {
+        const hdr = 'No,Kondisi,SetPoint,Hasil\n';
+        const csv = hdr + rows.map(r => `${r.no},"${r.cond}",${r.sp},"${r.hasil}"`).join('\n');
+        const link = document.createElement('a');
+        link.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+        link.download = 'hasil-analisis-tegangan.csv';
+        link.click();
+      };
+    });
+  </script>
+</body>
+</html>
